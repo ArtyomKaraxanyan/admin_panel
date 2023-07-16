@@ -71,9 +71,13 @@ $(document)
             cancelButtonText: 'No',
         }).then(result => {
             if (result?.value) {
-
-                $.ajax({url: url, success: function(result){
-                        _this.remove()
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({url: url, type: 'POST',success: function(result){
+                        _this.parent().remove()
                     }});
             }
         })

@@ -53,16 +53,11 @@ class CategoryService
         ]);
     }
 
-    public function update(Request $request): JsonResponse
+    public function update($categoryId, $categoryDetails): JsonResponse
     {
-        $orderId = $request->route('id');
-        $orderDetails = $request->only([
-            'client',
-            'details'
-        ]);
 
         return response()->json([
-            'data' => $this->categoryrRepository->updateCategory($orderId, $orderDetails)
+            'data' => $this->categoryrRepository->updateCategory($categoryId, $categoryDetails)
         ]);
     }
 
@@ -74,7 +69,7 @@ class CategoryService
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function imageDelete($id): JsonResponse
+    public function imageDelete($id)
     {
         return $this->categoryrRepository->deleteCategoryImageById($id);
     }

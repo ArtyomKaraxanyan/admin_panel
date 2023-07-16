@@ -16,7 +16,7 @@ Route::prefix('admin')->group(function () {
 
     Route::group(['middleware' => 'auth'], function () {
         Route::get('', [DashboardController::class, 'index'])->name('admin');
-        Route::post('image/remove/{id}', [DashboardController::class, 'index'])->name('deleteImage');
+        Route::post('image/remove/{id}', [\App\Http\Controllers\Admin\BookCategoriesController::class, 'imageDelete'])->name('deleteImage');
         foreach (\App\Enums\ResourcesEnum::all() as $name => $class) {
             if (class_exists($class)) {
                 Route::resource($name, $class);

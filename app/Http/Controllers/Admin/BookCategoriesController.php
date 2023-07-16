@@ -57,17 +57,13 @@ class BookCategoriesController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update($categoryId,Request $request)
     {
-        $orderId = $request->route('id');
-        $orderDetails = $request->only([
-            'client',
-            'details'
+        $categoryDetails = $request->except(['_token', '_method' ]);
+         response()->json([
+            'data' => $this->categoryService->update($categoryId, $categoryDetails)
         ]);
-
-        return response()->json([
-            'data' => $this->categoryService->updateOrder($orderId, $orderDetails)
-        ]);
+        return redirect()->back();
     }
 
     public function destroy(Request $request)

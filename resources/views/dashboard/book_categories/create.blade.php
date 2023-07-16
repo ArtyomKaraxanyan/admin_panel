@@ -15,7 +15,7 @@
                                     <div class="form-floating has-validation mb-3">
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
                                                id="title" name="title" placeholder="{{__('Category title')}}"
-                                               value="{{old('name')}}">
+                                               value="{{old('title')}}">
                                         @error('name')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror

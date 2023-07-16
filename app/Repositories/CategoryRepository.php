@@ -34,7 +34,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
 
         $category= Category::create($categoryDetails);
-
+        if (isset($newDetails['cover']) && count($categoryDetails['cover'])>0){
         foreach ($categoryDetails['cover'] as $cover){
             if ($cover->isFile()){
                 $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
@@ -50,12 +50,32 @@ class CategoryRepository implements CategoryRepositoryInterface
                CategoryImage::create(['category_id'=>$category->id,'path'=>$name]);
             }
         }
+        }
 
     }
 
     public function updateCategory($categoryId, array $newDetails)
     {
-        return Category::whereId($categoryId)->update($newDetails);
+
+        if (isset($newDetails['cover']) && count($newDetails['cover'])>0){
+
+        foreach ($newDetails['cover'] as $cover){
+            if ($cover->isFile()){
+                $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
+                $destinationPathThumbnail = public_path('/image/100x100/');
+                $cover100x100 = Image::make($cover->path());
+                $cover100x100->resize(250, 100, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPathThumbnail.'/'.$name);
+
+                $destinationPath = public_path('/image/original');
+                $cover->move($destinationPath, $name);
+
+                CategoryImage::create(['category_id'=>$categoryId,'path'=>$name]);
+            }
+        }
+        }
+         Category::whereId($categoryId)->update($newDetails);
     }
 
     public function getFulfilledCategory()
