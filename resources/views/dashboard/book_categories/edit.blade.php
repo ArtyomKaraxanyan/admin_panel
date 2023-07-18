@@ -16,8 +16,8 @@
                                     <div class="logo-preview text-center m-4">
                                          @foreach($category->covers as $cover)
                                              <span class="image_blog">
-                                        <img src="{{asset('/image/100x100/'.$cover->path)}}" alt="cover" class="delete_cover" style="">
-                                                <button style="" class="image_delete" data-url="{{route('deleteImage',$cover->id)}}"><i class="bi bi-trash"></i></button>
+                                        <img src="{{asset('/images/category/100x100/'.$cover->path)}}" alt="cover" class="delete_cover" style="">
+                                          <button style="" class="image_delete" data-url="{{route('deleteImage',$cover->id)}}"><i class="bi bi-trash"></i></button
                                              </span>
                                           @endforeach
                                     </div>

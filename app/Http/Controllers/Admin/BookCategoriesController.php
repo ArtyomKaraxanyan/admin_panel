@@ -48,15 +48,6 @@ class BookCategoriesController extends Controller
         return redirect()->back();
     }
 
-    public function show(Request $request)
-    {
-        $orderId = $request->route('id');
-
-        return response()->json([
-            'data' => $this->categoryService->getOrderById($orderId)
-        ]);
-    }
-
     public function update($categoryId,Request $request)
     {
         $categoryDetails = $request->except(['_token', '_method' ]);
@@ -66,12 +57,11 @@ class BookCategoriesController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $orderId = $request->route('id');
-        $this->categoryService->deleteOrder($orderId);
-
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        $categoryId = $id;
+        $this->categoryService->destroy($categoryId);
+        return redirect()->back();
     }
     public function imageDelete($id)
     {

@@ -6,6 +6,7 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Models\Category;
 use Illuminate\Support\Arr;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -23,28 +24,21 @@ class CategoryRepository implements CategoryRepositoryInterface
         return view('dashboard.book_categories.edit',['category'=>$category]);
     }
 
-    public function deleteCategory($categoryId)
-    {
-        Category::destroy($categoryId);
-
-    }
-
-
     public function createCategory(array $categoryDetails)
     {
-
         $category= Category::create($categoryDetails);
-        if (isset($newDetails['cover']) && count($categoryDetails['cover'])>0){
+
+        if (count($categoryDetails['cover'])>0){
         foreach ($categoryDetails['cover'] as $cover){
             if ($cover->isFile()){
                 $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
-                $destinationPathThumbnail = public_path('/image/100x100/');
+                $destinationPathThumbnail = public_path('/images/category/100x100/');
                 $cover100x100 = Image::make($cover->path());
                 $cover100x100->resize(250, 100, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($destinationPathThumbnail.'/'.$name);
 
-                $destinationPath = public_path('/image/original');
+                $destinationPath = public_path('/images/category/original/');
                 $cover->move($destinationPath, $name);
 
                CategoryImage::create(['category_id'=>$category->id,'path'=>$name]);
@@ -58,24 +52,26 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
 
         if (isset($newDetails['cover']) && count($newDetails['cover'])>0){
-
         foreach ($newDetails['cover'] as $cover){
             if ($cover->isFile()){
                 $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
-                $destinationPathThumbnail = public_path('/image/100x100/');
+                $destinationPathThumbnail = public_path('/images/category/100x100/');
                 $cover100x100 = Image::make($cover->path());
                 $cover100x100->resize(250, 100, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($destinationPathThumbnail.'/'.$name);
 
-                $destinationPath = public_path('/image/original');
+                $destinationPath = public_path('/images/category/original');
                 $cover->move($destinationPath, $name);
 
                 CategoryImage::create(['category_id'=>$categoryId,'path'=>$name]);
+                $newDetails = Arr::except($newDetails,['cover']);
             }
         }
         }
-         Category::whereId($categoryId)->update($newDetails);
+
+
+        Category::whereId($categoryId)->update($newDetails);
     }
 
     public function getFulfilledCategory()
@@ -83,8 +79,21 @@ class CategoryRepository implements CategoryRepositoryInterface
         return Category::where('is_fulfilled', true);
     }
 
+    public function deleteCategory($categoryId)
+    {
+        $categoryImage=CategoryImage::where('category_id',$categoryId)->get();
+        foreach ($categoryImage as $images){
+            unlink(public_path().'/images/category/100x100/'.$images->path);
+            unlink(public_path().'/images/category/original/'.$images->path);
+        }
+        Category::destroy($categoryId);
+
+    }
     public function deleteCategoryImageById($imageID)
     {
-        CategoryImage::destroy($imageID);
+       $image = CategoryImage::where('id',$imageID)->first();
+        unlink(public_path().'/images/category/100x100/'.$image->path);
+        unlink(public_path().'/images/category/original/'.$image->path);
+        $image->destroy($imageID);
     }
 }

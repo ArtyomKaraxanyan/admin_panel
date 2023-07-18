@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('author');
             $table->text('description');
-            $table->integer('rating')->nullable();;
-            $table->string('cover');
+            $table->float('rating')->nullable();;
             $table->timestamps();
         });
     }

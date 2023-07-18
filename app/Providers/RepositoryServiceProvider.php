@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\BookRepository;
+use App\Repositories\Interfaces\BookRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\CategoryRepository;
 
@@ -31,6 +33,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(BookRepositoryInterface::class, BookRepository::class);
 
     }
 }

@@ -18,4 +18,8 @@ class Category extends Model
     {
         return $this->hasMany(CategoryImage::class);
     }
+    public function books()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

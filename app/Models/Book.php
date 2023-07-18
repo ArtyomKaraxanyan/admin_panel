@@ -12,19 +12,18 @@ class Book extends Model
     protected $fillable = [
         'category_id',
         'title',
-        'slug',
         'author',
         'description',
         'rating',
-        'cover'
 
     ];
 
-    protected $perPage = 10;
-
-    public function getLogoFullPathAttribute()
+    public function covers()
     {
-        $filePath = 'storage/uploads/books/' . $this->id . '/100x100/' . $this->logo;
-        return asset($filePath);
+     return $this->hasMany(BookImage::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

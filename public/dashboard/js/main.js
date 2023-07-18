@@ -82,3 +82,31 @@ $(document)
             }
         })
     });
+
+$(document)
+    .on('click', '.book_image_delete', function (e) {
+        e.preventDefault();
+        let _this = $(this),
+            url = $(_this).attr('data-url');
+
+        Swal.fire({
+            text: 'Are you sure you want to delete ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+        }).then(result => {
+            if (result?.value) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({url: url, type: 'POST',success: function(result){
+                        _this.parent().remove()
+                    }});
+            }
+        })
+    });

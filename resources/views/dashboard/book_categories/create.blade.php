@@ -5,7 +5,7 @@
             <div class="col-lg-12 m-auto">
                 <div class="card m-auto">
                     <div class="card-body">
-                        <h5 class="card-title">{{ __('Create Company') }}</h5>
+                        <h5 class="card-title">{{ __('Create Category') }}</h5>
 
                         <form class="row g-3" method="post" action="{{route('categories.store')}}" enctype="multipart/form-data">
                             @csrf
@@ -16,7 +16,7 @@
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
                                                id="title" name="title" placeholder="{{__('Category title')}}"
                                                value="{{old('title')}}">
-                                        @error('name')
+                                        @error('title')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                         <label for="name">{{ __('Category title') }}</label>
@@ -26,9 +26,9 @@
                                         <h6 >{{ __('Category cover') }}</h6>
                                         <div class="upload-content d-flex">
                                             <input type="file" multiple class="form-control @error('cover') is-invalid @enderror"
-                                                   id="cover" name="cover[]"  placeholder="{{__('Company cover')}}"
+                                                   id="cover" name="cover[]"  placeholder="{{__('Category cover')}}"
                                                    value="{{old('cover')}}">
-                                            @error('logo')
+                                            @error('cover')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
                                         </div>

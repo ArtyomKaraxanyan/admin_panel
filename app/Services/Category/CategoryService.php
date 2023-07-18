@@ -27,12 +27,6 @@ class CategoryService
        return view('dashboard.book_categories.create');
     }
 
-    public function edit($id)
-    {
-        return $this->categoryrRepository->getCategoryById($id);
-    }
-
-
     public function store($data): JsonResponse
     {
 
@@ -44,13 +38,9 @@ class CategoryService
         );
     }
 
-    public function show(Request $request): JsonResponse
+    public function edit($id)
     {
-        $orderId = $request->route('id');
-
-        return response()->json([
-            'data' => $this->categoryrRepository->getCategoryById($orderId)
-        ]);
+        return $this->categoryrRepository->getCategoryById($id);
     }
 
     public function update($categoryId, $categoryDetails): JsonResponse
@@ -61,10 +51,10 @@ class CategoryService
         ]);
     }
 
-    public function destroy(Request $request): JsonResponse
+    public function destroy($categoryId): JsonResponse
     {
-        $orderId = $request->route('id');
-        $this->categoryrRepository->deleteCategory($orderId);
+
+        $this->categoryrRepository->deleteCategory($categoryId);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }

@@ -26,12 +26,14 @@
                                     <tr>
                                         <th scope="row">{{ $category->id }}</th>
                                         <td>
-                                            <section id="image-carousel" class="splide" aria-label="Beautiful Images">
+                                            <section id="image-carousel" class="splide" aria-label="Cover">
                                                 <div class="splide__track">
                                                     <ul class="splide__list" >
-                                                            @foreach($category->covers as $cover)
-                                                            <img src="{{asset('/image/100x100/'.$cover->path)}}" alt="cover">
-                                                            @endforeach
+                                                            @forelse($category->covers as $cover)
+                                                            <img src="{{asset('/images/category/100x100/'.$cover->path)}}" alt="cover">
+                                                        @empty
+                                                                No Cover
+                                                            @endforelse
                                                     </ul>
                                                 </div>
                                             </section>
