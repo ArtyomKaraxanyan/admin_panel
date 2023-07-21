@@ -45,7 +45,7 @@ class BookCategoriesController extends Controller
     public function store(StoreCategoryRequest $request )
     {
          $this->categoryService->store($request->all());
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Created!');;
     }
 
     public function update($categoryId,Request $request)
@@ -54,14 +54,14 @@ class BookCategoriesController extends Controller
          response()->json([
             'data' => $this->categoryService->update($categoryId, $categoryDetails)
         ]);
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Updated!');
     }
 
     public function destroy($id)
     {
         $categoryId = $id;
         $this->categoryService->destroy($categoryId);
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Destroyed!');;
     }
     public function imageDelete($id)
     {

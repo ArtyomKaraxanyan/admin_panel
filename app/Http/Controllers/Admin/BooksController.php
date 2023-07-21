@@ -44,7 +44,7 @@ class BooksController extends Controller
     {
 
       $this->bookService->store($request->all());
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Created!');;
     }
 
     public function edit(Book $book)
@@ -57,12 +57,12 @@ class BooksController extends Controller
     {
         $request = $request->except(['_token', '_method' ]);
         $this->bookService->update($book,$request);
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Updated!');;
     }
     public function destroy($id)
     {
         $this->bookService->delete($id);
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Destroyed!');;
     }
 
     public function deleteBookImageById($bookImageId){
