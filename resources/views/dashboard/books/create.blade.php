@@ -12,12 +12,15 @@
                             <div class="col-md-12">
                                 <div class="col-md-8 m-auto">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="category" name="category_id" aria-label="Category">
+                                        <select class="form-select @error('category_id') is-invalid @enderror" id="category"  name="category_id" aria-label="Category">
                                             @forelse ($categories as $category)
                                                 <option value="{{$category->id}}">{{ $category->title }}</option>
                                             @empty
                                             @endforelse
                                         </select>
+                                        @error('category_id')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                         <label for="book">{{__('Category')}}</label>
                                     </div>
 

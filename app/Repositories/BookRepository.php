@@ -14,7 +14,7 @@ class BookRepository implements BookRepositoryInterface
 {
     public function getAllBooks()
     {
-        $books=Book::all();
+        $books=Book::paginate(15);
         return view('dashboard.books.index',["books"=>$books]);
     }
     public function getBookById($bookDetails){
@@ -38,16 +38,8 @@ class BookRepository implements BookRepositoryInterface
         if (count($bookDetails['cover'])>0){
             foreach ($bookDetails['cover'] as $cover){
                 if ($cover->isFile()){
-                    $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
-                    $destinationPathThumbnail = public_path('/images/book/100x100/');
-                    $cover100x100 = Image::make($cover->path());
-                    $cover100x100->resize(250, 100, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPathThumbnail.'/'.$name);
-
-                    $destinationPath = public_path('/images/book/original/');
-                    $cover->move($destinationPath, $name);
-
+                    $file=['cover'=>$cover,'directory'=>'book'];
+                    $name= FileUploadRepository::FileUpload($file);
                     BookImage::create(['book_id'=>$book->id,'path'=>$name]);
                 }
             }
@@ -58,14 +50,8 @@ class BookRepository implements BookRepositoryInterface
         if (isset($newDetails['cover']) && count($newDetails['cover'])>0){
             foreach ($newDetails['cover'] as $cover){
                 if ($cover->isFile()){
-                    $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
-                    $destinationPathThumbnail = public_path('/images/book/100x100/');
-                    $cover100x100 = Image::make($cover->path());
-                    $cover100x100->resize(250, 100, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPathThumbnail.'/'.$name);
-                    $destinationPath = public_path('/images/book/original');
-                    $cover->move($destinationPath, $name);
+                    $file=['cover'=>$cover,'directory'=>'book'];
+                    $name= FileUploadRepository::FileUpload($file);
                     BookImage::create(['book_id'=>$bookId,'path'=>$name]);
                     $newDetails = Arr::except($newDetails,['cover']);
                 }

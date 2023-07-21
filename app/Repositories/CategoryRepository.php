@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\CategoryImage;
+use App\Repositories\FileUploadRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Models\Category;
 use Illuminate\Support\Arr;
@@ -12,7 +13,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 {
     public function getAllCategories()
     {
-        $categories=Category::all();
+        $categories=Category::paginate(15);
 //        return View::make('blog')->with('posts', $posts);
 
         return view('dashboard.book_categories.index',["categories"=>$categories]);
@@ -31,16 +32,9 @@ class CategoryRepository implements CategoryRepositoryInterface
         if (count($categoryDetails['cover'])>0){
         foreach ($categoryDetails['cover'] as $cover){
             if ($cover->isFile()){
-                $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
-                $destinationPathThumbnail = public_path('/images/category/100x100/');
-                $cover100x100 = Image::make($cover->path());
-                $cover100x100->resize(250, 100, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPathThumbnail.'/'.$name);
 
-                $destinationPath = public_path('/images/category/original/');
-                $cover->move($destinationPath, $name);
-
+                $file=['cover'=>$cover,'directory'=>'category'];
+                 $name= FileUploadRepository::FileUpload($file);
                CategoryImage::create(['category_id'=>$category->id,'path'=>$name]);
             }
         }
@@ -54,16 +48,9 @@ class CategoryRepository implements CategoryRepositoryInterface
         if (isset($newDetails['cover']) && count($newDetails['cover'])>0){
         foreach ($newDetails['cover'] as $cover){
             if ($cover->isFile()){
-                $name = rand() . time() . '.' . $cover->getClientOriginalExtension();
-                $destinationPathThumbnail = public_path('/images/category/100x100/');
-                $cover100x100 = Image::make($cover->path());
-                $cover100x100->resize(250, 100, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPathThumbnail.'/'.$name);
 
-                $destinationPath = public_path('/images/category/original');
-                $cover->move($destinationPath, $name);
-
+                $file=['cover'=>$cover,'directory'=>'category'];
+                $name= FileUploadRepository::FileUpload($file);
                 CategoryImage::create(['category_id'=>$categoryId,'path'=>$name]);
                 $newDetails = Arr::except($newDetails,['cover']);
             }

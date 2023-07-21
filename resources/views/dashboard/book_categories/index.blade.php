@@ -5,7 +5,7 @@
             <div class="col-lg-12 m-auto">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Companies</h5>
+                        <h5 class="card-title">Categories</h5>
                         <h5 class="card-title">
                             <a href="{{ route('categories.create') }}" class="btn btn-sm btn-outline-success text-capitalize">
                                 + Create
@@ -68,7 +68,7 @@
                                 @endforelse
                                 </tbody>
                             </table>
-                            {{--{!! $categories->links('dashboard.partials.pagination') !!}--}}
+                            {!! $categories->links('dashboard.partials.pagination') !!}
                         </div>
                     </div>
                 </div>

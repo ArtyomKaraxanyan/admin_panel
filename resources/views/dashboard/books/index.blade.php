@@ -73,6 +73,8 @@
                                 @endforelse
                                 </tbody>
                             </table>
+                            {!! $books->links('dashboard.partials.pagination') !!}
+
                         </div>
                     </div>
                 </div>
