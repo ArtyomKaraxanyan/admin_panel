@@ -14,8 +14,13 @@
                                     <div class="form-floating mb-3">
                                         <select class="form-select @error('category_id') is-invalid @enderror" id="category"  name="category_id" aria-label="Category">
                                             @forelse ($categories as $category)
-                                                <option value="{{$category->id}}">{{ $category->title }}</option>
+                                                @if (old('category_id') == $category->id)
+                                                    <option value="{{ $category->id }}" selected>{{ $category->title }}</option>
+                                                @else
+                                                    <option value="{{$category->id}}">{{ $category->title }}</option>
+                                                @endif
                                             @empty
+                                                <option value="" selected>--</option>
                                             @endforelse
                                         </select>
                                         @error('category_id')
